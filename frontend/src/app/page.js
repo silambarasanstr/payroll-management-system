@@ -5,7 +5,7 @@ const Home = async () => {
   // const demoData = await getDemo();
   
 
-  return <div>Dashboard </div>;
+  return <div>Dashboard simbu</div>;
 };
 
 export default Home;
