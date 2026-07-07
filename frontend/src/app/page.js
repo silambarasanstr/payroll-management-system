@@ -2,10 +2,10 @@ import React from "react";
 import { getDemo } from "@/services/demoService";
 
 const Home = async () => {
-  const demoData = await getDemo();
-  console.log(demoData);
+  // const demoData = await getDemo();
+  
 
-  return <div>Dashboard : silambarsan {demoData.message}</div>;
+  return <div>Dashboard </div>;
 };
 
 export default Home;
