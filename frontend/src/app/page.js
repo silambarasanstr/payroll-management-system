@@ -5,7 +5,7 @@ const Home = async () => {
   const demoData = await getDemo();
   console.log(demoData);
 
-  return <div>Dashboard :  {demoData.message}</div>;
+  return <div>Dashboard : silambarsan {demoData.message}</div>;
 };
 
 export default Home;
