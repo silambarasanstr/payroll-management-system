@@ -1,0 +1,8 @@
+node_modules
+.next
+out
+coverage
+public
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
