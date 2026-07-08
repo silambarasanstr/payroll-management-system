@@ -3,6 +3,8 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import dotenv from "dotenv";
 import helmet from "helmet";
+import authRoutes from "./routes/authRoutes.js";
+import employeeRoutes from "./routes/employeeRoutes.js";
 
 dotenv.config();
 
@@ -43,6 +45,9 @@ app.get("/api", (req, res) => {
     message: "Welcome to the Payroll Management System",
   });
 });
+
+app.use("/api/auth", authRoutes);
+app.use("/api/employees", employeeRoutes);
 
 // Start Server
 app.listen(PORT, () => {
