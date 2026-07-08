@@ -52,6 +52,11 @@ app.get("/api", (req, res) => {
     });
 });
 
+
+// app.get("/api/employees", (req, res) => {
+//   res.status(200).json({ success: true, data: employees });
+// });
+
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
 
