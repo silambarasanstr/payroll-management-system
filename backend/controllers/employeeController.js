@@ -4,7 +4,7 @@ export const createEmployee = async (req, res) => {
   try {
     const employee = new Employee(req.body);
     await employee.save();
-    res.status(201).json({
+    res.status(201).json({  
       success: true,
       data: employee,
       message: "Employee created successfully",
@@ -23,6 +23,7 @@ export const getEmployees = async (req, res) => {
     const employees = await Employee.find();
     res.status(200).json({
       success: true,
+      count: employees.length,
       data: employees,
       message: "Employees fetched successfully",
     });

@@ -6,7 +6,7 @@ export default function TestPage() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  console.log(process.env.NEXT_PUBLIC_API_URL,"lllllllllllll");
+  console.log(process.env.NEXT_PUBLIC_API_URL, "lllllllllllll");
 
   useEffect(() => {
     api
