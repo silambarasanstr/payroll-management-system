@@ -142,7 +142,7 @@ const EmployeesPage = () => {
 
             </thead>
 
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 ">
 {filteredEmployees.length > 0 ? (
   filteredEmployees.map((employee) => (
     <tr
@@ -182,7 +182,7 @@ const EmployeesPage = () => {
   <span className="inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700">
     {employee.department}
   </span>
-</td>
+      </td>
 
       {/* Designation */}
       <td className="px-4 py-3 text-sm text-slate-700">
