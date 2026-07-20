@@ -12,7 +12,7 @@ const initialForm = {
   designation: "",
   department: "",
   dateOfJoining: "",
-  
+
   salaryStructure: {
     basicSalary: "",
     allowances: "",
@@ -22,7 +22,7 @@ const initialForm = {
 
 export default function AddEmployeeModal({ isOpen, onClose, onAddEmployee }) {
   const [formData, setFormData] = useState(initialForm);
-  
+
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -48,14 +48,14 @@ export default function AddEmployeeModal({ isOpen, onClose, onAddEmployee }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
- 
+
     try {
       setLoading(true);
 
       const res = await employeesService.createEmployee(formData);
 
-console.log(res.data,"kkkkk");
-      
+      console.log(res.data, "kkkkk");
+
       onAddEmployee(res.data.data);
       setFormData(initialForm);
       onClose();
@@ -68,25 +68,25 @@ console.log(res.data,"kkkkk");
   };
 
   const handleQuickFill = () => {
-  const id = Date.now();
-  const random = Math.floor(1000 + Math.random() * 9000);
+    const id = Date.now();
+    const random = Math.floor(1000 + Math.random() * 9000);
 
-  setFormData({
-    ...initialForm,
-    employeeId: `EMP-${id}`,
-    name: "John Doe",
-    email: `john${random}@example.com`,
-    phone: "+1234567890",
-    designation: "Software Engineer",
-    department: "Engineering",
-    dateOfJoining: new Date().toISOString().split("T")[0],
-    salaryStructure: {
-      basicSalary: 50000,
-      allowances: 10000,
-      deductions: 5000,
-    },
-  });
-};
+    setFormData({
+      ...initialForm,
+      employeeId: `EMP-${id}`,
+      name: "John Doe",
+      email: `john${random}@example.com`,
+      phone: "+1234567890",
+      designation: "Software Engineer",
+      department: "Engineering",
+      dateOfJoining: new Date().toISOString().split("T")[0],
+      salaryStructure: {
+        basicSalary: 50000,
+        allowances: 10000,
+        deductions: 5000,
+      },
+    });
+  };
 
   return (
     <Modal title="Add Employee" isOpen={isOpen} onClose={onClose}>
@@ -206,9 +206,9 @@ console.log(res.data,"kkkkk");
             Cancel
           </button>
 
-           <button type="button"  onClick={handleQuickFill} className="rounded bg-emerald-600 px-3 py-1.5 text-sm text-white ">
+          <button type="button" onClick={handleQuickFill} className="rounded bg-emerald-600 px-3 py-1.5 text-sm text-white ">
             quick fill
-           </button>
+          </button>
 
           <button type="submit" disabled={loading} className="rounded bg-emerald-600 px-3 py-1.5 text-sm text-white disabled:opacity-50">
             {loading ? "Saving..." : "Save Employee"}

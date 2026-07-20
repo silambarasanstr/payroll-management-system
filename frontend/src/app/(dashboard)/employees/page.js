@@ -40,7 +40,6 @@ const EmployeesPage = () => {
     });
   }, [employees, search]);
 
-
   const handleDelete = async (employeeId) => {
     try {
       await employeesService.deleteEmployee(employeeId);
@@ -175,9 +174,12 @@ const EmployeesPage = () => {
 
                     {/* Joining Date */}
                     <td className="px-4 py-3 text-sm text-slate-600">{employee.dateOfJoining ? new Date(employee.dateOfJoining).toLocaleDateString() : "-"}</td>
-                  
-                    <td><button type="button" onClick={() => handleDelete(employee._id)} className="px-4 py-3 text-sm text-emerald-600 hover:text-emerald-800 cursor-pointer">Delete</button></td>
-                  
+
+                    <td>
+                      <button type="button" onClick={() => handleDelete(employee._id)} className="px-4 py-3 text-sm text-emerald-600 hover:text-emerald-800 cursor-pointer">
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))
               ) : (
@@ -196,13 +198,7 @@ const EmployeesPage = () => {
         </div>
       )}
 
-      <AddEmployeeModal
-  isOpen={open}
-  onClose={() => setOpen(false)}
-  onAddEmployee={(employee) =>
-    setEmployees((prev) => [...prev, employee])
-  }
-/>
+      <AddEmployeeModal isOpen={open} onClose={() => setOpen(false)} onAddEmployee={(employee) => setEmployees((prev) => [...prev, employee])} />
     </div>
   );
 };

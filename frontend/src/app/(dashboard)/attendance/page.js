@@ -1,67 +1,33 @@
 "use client";
-
 import { useEffect, useState } from "react";
-import attendanceService from "@/services/attendanceService";
-import employeesService from "@/services/employeesService";
+
+import { useEmployees } from "@/hooks/useEmployees";
+import { useAttendance } from "@/hooks/useAttendance";
 
 const AttendancePage = () => {
-  const [employees, setEmployees] = useState([]);
-  const [attendanceRecords, setAttendanceRecords] = useState([]);
+  const { employees, fetchEmployees, loading: employeesLoading } = useEmployees();
+
+  const { attendanceRecords, fetchAttendance, loading: attendanceLoading } = useAttendance();
+
   const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
-  const [loading, setLoading] = useState(true);
 
-  // Fetch Employees
   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const res = await employeesService.getEmployees();
+    const loadData = async () => {
+      const employeeList = await fetchEmployees();
 
-        const employeeList = res.data?.data || res.data || [];
-
-        setEmployees(employeeList);
-
-        if (employeeList.length > 0) {
-          setSelectedEmployeeId(employeeList[0]._id);
-        }
-      } catch (error) {
-        console.error("Error fetching employees:", error);
+      if (employeeList.length > 0) {
+        setSelectedEmployeeId(employeeList[0]._id);
       }
     };
 
-    fetchEmployees();
-  }, []);
+    loadData();
+  }, [fetchEmployees]);
 
-  // Fetch Attendance whenever employee changes
   useEffect(() => {
     if (!selectedEmployeeId) return;
 
-    const fetchAttendance = async () => {
-      try {
-        setLoading(true);
-
-        const res = await attendanceService.getAttendanceRecords(selectedEmployeeId);
-
-        const records = res || res.data || [];
-        console.log("Records:", records);
-
-        setAttendanceRecords(records);
-      } catch (error) {
-        console.error("Error fetching attendance:", error);
-        setAttendanceRecords([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAttendance();
-  }, [selectedEmployeeId]);
-
-
-
-
-  console.log(selectedEmployeeId,"hghghg");
-
-
+    fetchAttendance(selectedEmployeeId);
+  }, [selectedEmployeeId, fetchAttendance]);
 
   return (
     <div className="p-6">
@@ -80,7 +46,7 @@ const AttendancePage = () => {
         </select>
       </div>
 
-      {loading ? (
+      {attendanceLoading ? (
         <p>Loading...</p>
       ) : attendanceRecords.length === 0 ? (
         <p>No attendance records found.</p>
