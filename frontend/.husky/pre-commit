@@ -1,0 +1,6 @@
+
+
+yarn lint
+yarn format:check
+yarn build
+npx lint-staged
