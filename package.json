@@ -1,0 +1,15 @@
+{
+  "name": "Payroll-Management-System",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/silambarasanstr/payroll-management-system.git",
+  "author": "silambarasanstr <simbube2013@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.2.0"
+  },
+  "scripts": {
+    "prepare": "husky"
+  }
+}
