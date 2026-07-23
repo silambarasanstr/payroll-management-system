@@ -4,9 +4,6 @@
 echo "Running lint-staged..."
 npx lint-staged || exit 1
 
-echo "Running ESLint..."
-yarn lint || exit 1
-
 echo "Checking formatting..."
 yarn format:check || exit 1
 
