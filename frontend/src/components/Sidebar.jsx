@@ -72,9 +72,7 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="border-t border-emerald-600 p-4">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-white flex items-center justify-center text-emerald-700 font-bold shadow-inner">
-            {firstLetter}
-          </div>
+          <div className="h-10 w-10 rounded-full bg-white flex items-center justify-center text-emerald-700 font-bold shadow-inner">{firstLetter}</div>
 
           <div>
             <p className="text-sm font-semibold text-white truncate max-w-[120px]">{user?.name || "Admin"}</p>

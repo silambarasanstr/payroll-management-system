@@ -26,17 +26,14 @@ const attendanceService = {
       employeeId,
     });
 
-     console.log(response.data.data);
+    console.log(response.data.data);
 
     return response.data.data;
   },
 
   // Manual Attendance
   markAttendance: async (payload) => {
-    const response = await api.post(
-      "/attendance/mark",
-      payload
-    );
+    const response = await api.post("/attendance/mark", payload);
 
     return response.data.data;
   },

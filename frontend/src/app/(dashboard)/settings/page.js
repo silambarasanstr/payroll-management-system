@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Loader2,
-  
-} from "lucide-react";
+import { Loader2 } from "lucide-react";
 import PageHeader from "@/components/common/PageHeader";
 
 export default function SettingsPage() {
@@ -26,9 +23,7 @@ export default function SettingsPage() {
 
     setForm((prev) => ({
       ...prev,
-      [name]: ["taxRate", "pfRate", "workHours", "workDays"].includes(name)
-        ? Number(value)
-        : value,
+      [name]: ["taxRate", "pfRate", "workHours", "workDays"].includes(name) ? Number(value) : value,
     }));
   };
 
@@ -45,31 +40,19 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="System Settings"
-        subtitle="Configure organisation and payroll settings"
-      />
+      <PageHeader title="System Settings" subtitle="Configure organisation and payroll settings" />
 
-      <form
-        onSubmit={handleSubmit}
-        className="grid grid-cols-1 lg:grid-cols-12 gap-6"
-      >
-        
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 space-y-6">
           {/* Organisation */}
           <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
             <div className="flex items-center gap-2  pb-3 mb-5">
-              
-              <h2 className="text-base font-bold text-slate-800"> 
-                Organisation Details
-              </h2>
+              <h2 className="text-base font-bold text-slate-800">Organisation Details</h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm mb-1 font-medium">
-                  Company Name
-                </label>
+                <label className="block text-sm mb-1 font-medium">Company Name</label>
 
                 <input
                   name="companyName"
@@ -80,9 +63,7 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label className="block text-sm mb-1 font-medium">
-                  Registration ID
-                </label>
+                <label className="block text-sm mb-1 font-medium">Registration ID</label>
 
                 <input
                   name="regId"
@@ -93,9 +74,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm mb-1 font-medium">
-                  Email
-                </label>
+                <label className="block text-sm mb-1 font-medium">Email</label>
 
                 <input
                   type="email"
@@ -111,17 +90,12 @@ export default function SettingsPage() {
           {/* Payroll */}
           <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
             <div className="flex items-center gap-2  pb-3 mb-5">
-              
-              <h2 className="text-base font-bold text-slate-800">
-                Payroll & Taxes
-              </h2>
+              <h2 className="text-base font-bold text-slate-800">Payroll & Taxes</h2>
             </div>
 
             <div className="grid md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm mb-1 font-medium">
-                  Currency
-                </label>
+                <label className="block text-sm mb-1 font-medium">Currency</label>
 
                 <select
                   name="currency"
@@ -136,9 +110,7 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label className="block text-sm mb-1 font-medium">
-                  Tax Rate (%)
-                </label>
+                <label className="block text-sm mb-1 font-medium">Tax Rate (%)</label>
 
                 <input
                   type="number"
@@ -150,9 +122,7 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label className="block text-sm mb-1 font-medium">
-                  PF (%)
-                </label>
+                <label className="block text-sm mb-1 font-medium">PF (%)</label>
 
                 <input
                   type="number"
@@ -168,17 +138,12 @@ export default function SettingsPage() {
           {/* Attendance */}
           <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm">
             <div className="flex items-center gap-2  pb-3 mb-5">
-             
-              <h2 className="text-base font-bold text-slate-800">
-                Attendance Policy
-              </h2>
+              <h2 className="text-base font-bold text-slate-800">Attendance Policy</h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm mb-1 font-medium">
-                  Working Hours
-                </label>
+                <label className="block text-sm mb-1 font-medium">Working Hours</label>
 
                 <input
                   type="number"
@@ -190,9 +155,7 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label className="block text-sm mb-1 font-medium">
-                  Working Days
-                </label>
+                <label className="block text-sm mb-1 font-medium">Working Days</label>
 
                 <input
                   type="number"
@@ -206,24 +169,17 @@ export default function SettingsPage() {
           </div>
 
           <div className="flex justify-end">
-            <button
-              disabled={loading}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white rounded px-6 py-2.5 flex items-center gap-2"
-            >
+            <button disabled={loading} className="bg-emerald-600 hover:bg-emerald-700 text-white rounded px-6 py-2.5 flex items-center gap-2">
               {loading && <Loader2 size={16} className="animate-spin" />}
               Save Settings
             </button>
           </div>
         </div>
 
-       
         <div className="lg:col-span-4 space-y-6">
           <div className="rounded-xl border border-gray-300 bg-white p-6 shadow-sm sticky top-5">
             <div className="flex items-center gap-2  pb-3 mb-5">
-             
-              <h2 className="text-base font-bold text-slate-800">
-                Settings Summary
-              </h2>
+              <h2 className="text-base font-bold text-slate-800">Settings Summary</h2>
             </div>
 
             <div className="space-y-5">
@@ -259,16 +215,12 @@ export default function SettingsPage() {
 
               <div>
                 <p className="text-xs text-slate-500">Working Hours</p>
-                <p className="text-base">
-                  {form.workHours} Hours / Day
-                </p>
+                <p className="text-base">{form.workHours} Hours / Day</p>
               </div>
 
               <div>
                 <p className="text-xs text-slate-500">Working Days</p>
-                <p className="text-base">
-                  {form.workDays} Days / Month
-                </p>
+                <p className="text-base">{form.workDays} Days / Month</p>
               </div>
             </div>
           </div>

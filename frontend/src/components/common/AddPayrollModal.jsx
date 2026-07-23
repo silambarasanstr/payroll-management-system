@@ -48,11 +48,11 @@ export default function AddPayrollModal({ isOpen, onClose, onAddPayroll }) {
   const handleEmployeeChange = (e) => {
     const empId = e.target.value;
     const selectedEmp = employees.find((emp) => emp._id === empId);
-    
+
     setForm((prev) => ({
       ...prev,
       employee: empId,
-      salary: selectedEmp ? (selectedEmp.salaryStructure?.basicSalary || 0) : 0,
+      salary: selectedEmp ? selectedEmp.salaryStructure?.basicSalary || 0 : 0,
     }));
   };
 
@@ -193,11 +193,7 @@ export default function AddPayrollModal({ isOpen, onClose, onAddPayroll }) {
 
         {/* Buttons */}
         <div className="flex justify-end gap-2 pt-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-xl border border-slate-200 px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 cursor-pointer"
-          >
+          <button type="button" onClick={onClose} className="rounded-xl border border-slate-200 px-4 py-2 text-sm text-slate-500 hover:bg-slate-50 cursor-pointer">
             Cancel
           </button>
 

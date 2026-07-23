@@ -85,7 +85,6 @@ const AttendancePage = () => {
 
   return (
     <div className="p-6">
-      
       <PageHeader title="Attendance Records" subtitle="Manage employee attendance records" />
 
       {/* Employee Select */}
@@ -113,10 +112,7 @@ const AttendancePage = () => {
           Check In
         </button>
 
-        <button
-          onClick={handleCheckOut}
-          className="h-10 text-sm px-5 py-2 rounded bg-slate-800 hover:bg-slate-900 text-white font-semibold shadow-sm transition cursor-pointer"
-        >
+        <button onClick={handleCheckOut} className="h-10 text-sm px-5 py-2 rounded bg-slate-800 hover:bg-slate-900 text-white font-semibold shadow-sm transition cursor-pointer">
           Check Out
         </button>
 

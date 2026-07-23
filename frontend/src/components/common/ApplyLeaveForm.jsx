@@ -3,7 +3,7 @@ import Modal from "./Modal";
 import employeesService from "@/services/employeesService";
 import leaveService from "@/services/leaveService";
 
-const ApplyLeaveForm = ({ isOpen, onClose,onSuccess  }) => {
+const ApplyLeaveForm = ({ isOpen, onClose, onSuccess }) => {
   const initialForm = {
     employeeId: "",
     leaveType: "casual",
@@ -28,7 +28,6 @@ const ApplyLeaveForm = ({ isOpen, onClose,onSuccess  }) => {
       const employeeList = data?.data || data || [];
 
       setEmployees(employeeList);
-     
 
       if (employeeList.length > 0) {
         setForm((prev) => ({
@@ -60,13 +59,13 @@ const ApplyLeaveForm = ({ isOpen, onClose,onSuccess  }) => {
 
       setForm({
         ...initialForm,
-        employeeId: employees.length ? employees[0]._id : "", 
+        employeeId: employees.length ? employees[0]._id : "",
       });
 
       if (onSuccess) {
-      await onSuccess();
-    }
- 
+        await onSuccess();
+      }
+
       onClose();
     } catch (error) {
       console.error("Failed to apply leave", error);
@@ -81,16 +80,9 @@ const ApplyLeaveForm = ({ isOpen, onClose,onSuccess  }) => {
           {/* Employee & Leave Type */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium">
-                Employee
-              </label>
+              <label className="mb-1 block text-xs font-medium">Employee</label>
 
-              <select
-                name="employeeId"
-                value={form.employeeId}
-                onChange={handleChange}
-                className="h-8 w-full rounded border border-gray-300 px-2 text-sm outline-none focus:border-emerald-500"
-              >
+              <select name="employeeId" value={form.employeeId} onChange={handleChange} className="h-8 w-full rounded border border-gray-300 px-2 text-sm outline-none focus:border-emerald-500">
                 <option value="">Select Employee</option>
 
                 {employees.map((emp) => (
@@ -102,16 +94,9 @@ const ApplyLeaveForm = ({ isOpen, onClose,onSuccess  }) => {
             </div>
 
             <div>
-              <label className="mb-1 block text-xs font-medium">
-                Leave Type
-              </label>
+              <label className="mb-1 block text-xs font-medium">Leave Type</label>
 
-              <select
-                name="leaveType"
-                value={form.leaveType}
-                onChange={handleChange}
-                className="h-8 w-full rounded border border-gray-300 px-2 text-sm outline-none focus:border-emerald-500"
-              >
+              <select name="leaveType" value={form.leaveType} onChange={handleChange} className="h-8 w-full rounded border border-gray-300 px-2 text-sm outline-none focus:border-emerald-500">
                 <option value="casual">Casual</option>
                 <option value="sick">Sick</option>
                 <option value="earned">Earned</option>
@@ -125,9 +110,7 @@ const ApplyLeaveForm = ({ isOpen, onClose,onSuccess  }) => {
           {/* Dates */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium">
-                Start Date
-              </label>
+              <label className="mb-1 block text-xs font-medium">Start Date</label>
 
               <input
                 type="date"
@@ -139,25 +122,15 @@ const ApplyLeaveForm = ({ isOpen, onClose,onSuccess  }) => {
             </div>
 
             <div>
-              <label className="mb-1 block text-xs font-medium">
-                End Date
-              </label>
+              <label className="mb-1 block text-xs font-medium">End Date</label>
 
-              <input
-                type="date"
-                name="endDate"
-                value={form.endDate}
-                onChange={handleChange}
-                className="h-8 w-full rounded border border-gray-300 px-2 text-sm outline-none focus:border-emerald-500"
-              />
+              <input type="date" name="endDate" value={form.endDate} onChange={handleChange} className="h-8 w-full rounded border border-gray-300 px-2 text-sm outline-none focus:border-emerald-500" />
             </div>
           </div>
 
           {/* Reason */}
           <div>
-            <label className="mb-1 block text-xs font-medium">
-              Reason
-            </label>
+            <label className="mb-1 block text-xs font-medium">Reason</label>
 
             <textarea
               name="reason"
@@ -171,18 +144,11 @@ const ApplyLeaveForm = ({ isOpen, onClose,onSuccess  }) => {
 
         {/* Buttons */}
         <div className="flex justify-end gap-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded border px-4 py-2 text-sm hover:bg-gray-100"
-          >
+          <button type="button" onClick={onClose} className="rounded border px-4 py-2 text-sm hover:bg-gray-100">
             Cancel
           </button>
 
-          <button
-            type="submit"
-            className="rounded bg-emerald-600 px-3 py-2 text-sm text-white hover:bg-emerald-700"
-          >
+          <button type="submit" className="rounded bg-emerald-600 px-3 py-2 text-sm text-white hover:bg-emerald-700">
             Apply Leave
           </button>
         </div>

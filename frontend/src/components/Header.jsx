@@ -32,25 +32,17 @@ export default function Header() {
     <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6 shadow-sm">
       {/* Left */}
       <div>
-        <h1 className="text-xl font-bold text-slate-800">
-          Payroll Management System
-        </h1>
-        <p className="text-sm text-slate-500">
-          Welcome back, {user?.name || "Admin"}
-        </p>
+        <h1 className="text-xl font-bold text-slate-800">Payroll Management System</h1>
+        <p className="text-sm text-slate-500">Welcome back, {user?.name || "Admin"}</p>
       </div>
 
       {/* Right */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <p className="text-sm font-semibold text-slate-800">
-              {user?.name || "Admin"}
-            </p>
+            <p className="text-sm font-semibold text-slate-800">{user?.name || "Admin"}</p>
 
-            <p className="text-xs capitalize text-slate-500">
-              {user?.role || "Administrator"}
-            </p>
+            <p className="text-xs capitalize text-slate-500">{user?.role || "Administrator"}</p>
           </div>
 
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100">

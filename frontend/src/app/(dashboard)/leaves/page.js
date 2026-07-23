@@ -100,15 +100,11 @@ export default function LeavePage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Leaves</h1>
-          <p className="text-sm text-slate-500">
-            {isAdmin ? "Manage all organization leave requests" : "View and apply for your leave history"}
-          </p>
+          <p className="text-sm text-slate-500">{isAdmin ? "Manage all organization leave requests" : "View and apply for your leave history"}</p>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="rounded bg-emerald-50  px-4 py-2 text-sm font-semibold text-emerald-700 border border-emerald-200">
-            Total Requests: {leaves.length}
-          </div>
+          <div className="rounded bg-emerald-50  px-4 py-2 text-sm font-semibold text-emerald-700 border border-emerald-200">Total Requests: {leaves.length}</div>
 
           <button
             onClick={() => setModalOpen(true)}
@@ -155,17 +151,11 @@ export default function LeavePage() {
               leaves.map((leave) => (
                 <tr key={leave._id} className="hover:bg-slate-50 transition-colors">
                   <td className="px-4 py-3">
-                    <div className="font-semibold text-slate-800">
-                      {leave.employee?.name || "Unknown"}
-                    </div>
-                    <div className="text-xs text-slate-500">
-                      {leave.employee?.email || "-"}
-                    </div>
+                    <div className="font-semibold text-slate-800">{leave.employee?.name || "Unknown"}</div>
+                    <div className="text-xs text-slate-500">{leave.employee?.email || "-"}</div>
                   </td>
 
-                  <td className="px-4 py-3 capitalize text-sm text-slate-700">
-                    {leave.leaveType}
-                  </td>
+                  <td className="px-4 py-3 capitalize text-sm text-slate-700">{leave.leaveType}</td>
 
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2 text-sm text-slate-700">
@@ -173,9 +163,7 @@ export default function LeavePage() {
 
                       <div>
                         <div>{formatDate(leave.startDate)}</div>
-                        <div className="text-slate-400 text-xs">
-                          to {formatDate(leave.endDate)}
-                        </div>
+                        <div className="text-slate-400 text-xs">to {formatDate(leave.endDate)}</div>
                       </div>
                     </div>
                   </td>
@@ -190,13 +178,7 @@ export default function LeavePage() {
                   </td>
 
                   <td className="px-4 py-3">
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${statusColor(
-                        leave.status
-                      )}`}
-                    >
-                      {leave.status}
-                    </span>
+                    <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${statusColor(leave.status)}`}>{leave.status}</span>
                   </td>
 
                   <td className="px-4 py-3 text-sm text-slate-600">
@@ -246,11 +228,7 @@ export default function LeavePage() {
         </table>
       </div>
 
-      <ApplyLeaveForm
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSuccess={handleLeaveSuccess}
-      />
+      <ApplyLeaveForm isOpen={modalOpen} onClose={() => setModalOpen(false)} onSuccess={handleLeaveSuccess} />
     </div>
   );
 }

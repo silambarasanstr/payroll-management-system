@@ -55,7 +55,6 @@ const EmployeesPage = () => {
     <div className="min-h-screen bg-slate-50 p-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        
         <PageHeader title="Employees" subtitle="Manage all employees in your organization" />
 
         <button
