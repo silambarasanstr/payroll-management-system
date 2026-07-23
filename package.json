@@ -10,6 +10,10 @@
     "lint-staged": "^17.2.0"
   },
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "dev": "cd frontend && yarn dev",
+    "build": "cd frontend && yarn build",
+    "start": "cd frontend && yarn start",
+    "lint": "cd frontend && yarn lint"
   }
 }
