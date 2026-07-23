@@ -1,25 +1,24 @@
 "use client";
-import { useEffect, useState } from "react";
-import api from "@/lib/axios";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-export default function TestPage() {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-
-  console.log(process.env.NEXT_PUBLIC_API_URL, "lllllllllllll");
+export default function RootPage() {
+  const router = useRouter();
 
   useEffect(() => {
-    api
-      .get("/")
-      .then((res) => setData(res.data))
-      .catch((err) => setError(err.message));
-  }, []);
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.replace("/dashboard");
+    } else {
+      router.replace("/login");
+    }
+  }, [router]);
 
   return (
-    <div>
-      <h1>API Test</h1>
-      {error && <p>Error: {error}</p>}
-      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+    <div className="flex h-screen items-center justify-center bg-slate-50">
+      <div className="animate-pulse text-emerald-600 font-semibold text-lg">
+        Redirecting...
+      </div>
     </div>
   );
 }

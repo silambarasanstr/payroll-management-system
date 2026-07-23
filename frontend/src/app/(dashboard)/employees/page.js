@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Search, Plus } from "lucide-react";
 import employeesService from "@/services/employeesService";
 import AddEmployeeModal from "@/components/common/AddEmployeeModal";
+import PageHeader from "@/components/common/PageHeader";
 
 const EmployeesPage = () => {
   const [employees, setEmployees] = useState([]);
@@ -15,7 +16,7 @@ const EmployeesPage = () => {
     const fetchEmployees = async () => {
       try {
         const res = await employeesService.getEmployees();
-        setEmployees(res.data.data || []);
+        setEmployees(res || []);
       } catch (err) {
         console.error(err);
       } finally {
@@ -54,16 +55,13 @@ const EmployeesPage = () => {
     <div className="min-h-screen bg-slate-50 p-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Employees</h1>
-
-          <p className="mt-1 text-sm text-slate-500">Manage all employees in your organization</p>
-        </div>
+        
+        <PageHeader title="Employees" subtitle="Manage all employees in your organization" />
 
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="h-10 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium flex items-center gap-2 shadow-sm transition cursor-pointer"
+          className="h-10 px-4 rounded bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium flex items-center gap-2 shadow-sm transition cursor-pointer"
         >
           <Plus size={18} />
           Add Employee
@@ -71,7 +69,7 @@ const EmployeesPage = () => {
       </div>
 
       {/* Search */}
-      <div className="mt-6 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+      <div className="mt-6 rounded border border-gray-300 bg-white px-4 py-3 shadow-sm">
         <div className="flex items-center gap-3">
           <Search size={18} className="text-emerald-600" />
 
@@ -98,7 +96,7 @@ const EmployeesPage = () => {
       {loading ? (
         <div className="mt-20 text-center text-slate-500">Loading Employees...</div>
       ) : (
-        <div className="mt-5 overflow-x-auto rounded-xl bg-white border border-slate-200 shadow-sm">
+        <div className="mt-5 overflow-x-auto rounded-xl bg-white border border-gray-300 shadow-sm">
           <table className="min-w-375 whitespace-nowrap">
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>

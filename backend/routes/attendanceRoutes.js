@@ -10,7 +10,7 @@ import {
 const router = express.Router();
 
 router.post("/check-in", checkIn);
-router.put("/check-out", checkOut);
+router.post("/check-out", checkOut);
 router.post("/mark", markAttendance);
 router.get("/:employeeId/summary", getMonthlySummary);
 router.get('/:employeeId', getAttendance);

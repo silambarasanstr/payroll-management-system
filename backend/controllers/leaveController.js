@@ -30,11 +30,12 @@ export const applyLeave = async (req, res) => {
 
 export const getLeaves = async (req, res) => {
   try {
-    const { status, employeeId } = req.query;
+    const { status } = req.query;
+    const { employeeId } = req.params;
 
     const filter = {};
 
-    if (employeeId) {
+    if (employeeId && employeeId !== "all") {
       filter.employee = employeeId;
     }
 

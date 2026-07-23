@@ -4,36 +4,46 @@ export const checkIn = async (req, res) => {
   try {
     const { employeeId } = req.body;
 
-    const attendanceDate = new Date();
-    attendanceDate.setHours(0, 0, 0, 0);
+    // Validate employeeId
+    if (!employeeId) {
+      return res.status(400).json({
+        success: false,
+        message: "Employee ID is required",
+      });
+    }
 
-    // Check if attendance already exists for the same employee and date
+    // Today's date (00:00:00)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Check if already checked in today
     const existingAttendance = await Attendance.findOne({
       employee: employeeId,
-      date: attendanceDate,
+      date: today,
     });
 
     if (existingAttendance) {
       return res.status(400).json({
         success: false,
-        message: "Employee has already checked in for this date.",
+        message: "Employee has already checked in today",
       });
     }
 
+    // Create attendance
     const attendance = await Attendance.create({
       employee: employeeId,
-      date: attendanceDate,
+      date: today,
       checkIn: new Date(),
       status: "present",
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: attendance,
       message: "Check-in recorded successfully",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Error recording check-in",
       error: error.message,
@@ -45,6 +55,7 @@ export const checkOut = async (req, res) => {
   try {
     const { employeeId } = req.body;
 
+    // Validate employeeId
     if (!employeeId) {
       return res.status(400).json({
         success: false,
@@ -52,14 +63,14 @@ export const checkOut = async (req, res) => {
       });
     }
 
-    // Today's date
-    const attendanceDate = new Date();
-    attendanceDate.setHours(0, 0, 0, 0);
+    // Today's date (00:00:00)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
     // Find today's attendance
     const attendance = await Attendance.findOne({
       employee: employeeId,
-      date: attendanceDate,
+      date: today,
     });
 
     if (!attendance) {
@@ -69,6 +80,15 @@ export const checkOut = async (req, res) => {
       });
     }
 
+    // Check if employee has checked in
+    if (!attendance.checkIn) {
+      return res.status(400).json({
+        success: false,
+        message: "Check-in time not found",
+      });
+    }
+
+    // Check if already checked out
     if (attendance.checkOut) {
       return res.status(400).json({
         success: false,
@@ -83,18 +103,19 @@ export const checkOut = async (req, res) => {
       (checkOutTime.getTime() - attendance.checkIn.getTime()) /
       (1000 * 60 * 60);
 
+    // Update attendance
     attendance.checkOut = checkOutTime;
     attendance.workHours = Number(workHours.toFixed(2));
 
     await attendance.save();
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: attendance,
       message: "Check-out recorded successfully",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Error recording check-out",
       error: error.message,
@@ -107,8 +128,8 @@ export const markAttendance = async (req, res) => {
     const { employeeId, date, status, remarks } = req.body;
 
 
-    // Today's date
-    const attendanceDate = new Date();
+    // Today's date or custom date
+    const attendanceDate = date ? new Date(date) : new Date();
     attendanceDate.setHours(0, 0, 0, 0);
 
 
