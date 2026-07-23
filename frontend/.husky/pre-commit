@@ -1,7 +1,14 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx lint-staged
-yarn lint
-npm test
-yarn build
+echo "Running lint-staged..."
+npx lint-staged || exit 1
+
+echo "Running ESLint..."
+yarn lint || exit 1
+
+echo "Checking formatting..."
+yarn format:check || exit 1
+
+echo "Building project..."
+yarn build || exit 1
