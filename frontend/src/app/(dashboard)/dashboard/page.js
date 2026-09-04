@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Users, Wallet, CalendarClock, CheckCircle, Plus, ArrowRight, TrendingUp, UserPlus, Calendar, DollarSign, Briefcase } from "lucide-react";
+import { Users, Wallet, CalendarClock, CheckCircle, ArrowRight, UserPlus, Calendar, DollarSign } from "lucide-react";
+
 import employeesService from "@/services/employeesService";
 import payrollService from "@/services/payrollService";
 import leaveService from "@/services/leaveService";
@@ -16,6 +17,7 @@ export default function DashboardPage() {
     pendingLeaves: 0,
     attendanceRate: "95.8%",
   });
+
   const [recentEmployees, setRecentEmployees] = useState([]);
   const [recentLeaves, setRecentLeaves] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,19 +26,19 @@ export default function DashboardPage() {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-        // Fetch employees
+
         const emps = await employeesService.getEmployees();
         const employeesList = emps || [];
 
-        // Fetch payrolls
         const payRes = await payrollService.getPayrolls();
         const payrollsList = payRes.data.data || [];
+
         const totalSpending = payrollsList.reduce((acc, curr) => acc + (curr.netPay || 0), 0);
 
-        // Fetch leaves
         const leaveRes = await leaveService.getEmployeeLeaves("all");
         const leavesList = leaveRes.data || [];
-        const pending = leavesList.filter((l) => l.status === "pending").length;
+
+        const pending = leavesList.filter((leave) => leave.status === "pending").length;
 
         setStats({
           totalEmployees: employeesList.length,
@@ -45,7 +47,6 @@ export default function DashboardPage() {
           attendanceRate: employeesList.length > 0 ? "96.4%" : "100%",
         });
 
-        // Set recent lists
         setRecentEmployees(employeesList.slice(-4).reverse());
         setRecentLeaves(leavesList.slice(-4).reverse());
       } catch (error) {
@@ -74,169 +75,196 @@ export default function DashboardPage() {
       title: "Total Employees",
       value: stats.totalEmployees,
       icon: Users,
-      color: "text-emerald-600 bg-emerald-200",
+      color: "text-emerald-600 bg-emerald-50",
       description: "Organization headcount",
     },
     {
-      title: "Monthly Payroll Spending",
+      title: "Monthly Payroll",
       value: formatCurrency(stats.totalPayroll),
       icon: Wallet,
-      color: "text-blue-600 bg-blue-200",
+      color: "text-blue-600 bg-blue-50",
       description: "Net salary disbursed",
     },
     {
       title: "Pending Leaves",
       value: stats.pendingLeaves,
       icon: CalendarClock,
-      color: "text-amber-600 bg-amber-200",
+      color: "text-amber-600 bg-amber-50",
       description: "Needs admin approval",
     },
     {
-      title: "Avg Attendance Rate",
+      title: "Attendance Rate",
       value: stats.attendanceRate,
       icon: CheckCircle,
-      color: "text-purple-600 bg-purple-200",
+      color: "text-purple-600 bg-purple-50",
       description: "Current month index",
     },
   ];
 
+  const quickActions = [
+    {
+      href: "/employees",
+      label: "Add New Employee",
+      icon: UserPlus,
+    },
+    {
+      href: "/attendance",
+      label: "Record Attendance",
+      icon: Calendar,
+    },
+    {
+      href: "/leaves",
+      label: "Apply / Approve Leaves",
+      icon: CalendarClock,
+    },
+    {
+      href: "/payroll",
+      label: "Generate Payroll",
+      icon: DollarSign,
+    },
+  ];
+
   return (
-    <div className="space-y-8 p-1 font-sans">
+    <div className="space-y-4 p-1 font-sans">
+      {/* Page Header */}
       <PageHeader title="System Dashboard" subtitle="Real-time overview of organization operations & metrics." />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statCards.map((card, idx) => {
+      {/* Stats */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {statCards.map((card, index) => {
           const Icon = card.icon;
+
           return (
-            <div key={idx} className="rounded-2xl border border-gray-300 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300">
+            <div key={index} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-slate-500">{card.title}</span>
-                <div className={`h-10 w-10 rounded flex items-center justify-center ${card.color}`}>
-                  <Icon size={20} />
+                <span className="text-xs font-semibold text-slate-500">{card.title}</span>
+
+                <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${card.color}`}>
+                  <Icon size={17} strokeWidth={2} />
                 </div>
               </div>
-              <div className="mt-4">
-                <span className="text-2xl font-bold text-slate-800 tracking-tight">{card.value}</span>
-                <p className="text-xs text-slate-400 mt-1">{card.description}</p>
+
+              <div className="mt-3">
+                <p className="text-xl font-bold tracking-tight text-slate-800">{card.value}</p>
+
+                <p className="mt-0.5 text-[10px] text-slate-400">{card.description}</p>
               </div>
             </div>
           );
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-1 rounded-2xl border border-gray-300 bg-white p-6 shadow-sm flex flex-col justify-between">
-          <div>
-            <h2 className="text-lg font-bold text-slate-800">Quick Actions</h2>
-            <p className="text-xs text-slate-500 mt-1 mb-6">Common administrative tasks</p>
+      {/* Bottom Content */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        {/* Quick Actions */}
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="mb-3">
+            <h2 className="text-sm font-bold text-slate-800">Quick Actions</h2>
 
-            <div className="space-y-3.5">
-              <Link
-                href="/employees"
-                className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-emerald-50 hover:border-emerald-100 p-3 text-sm font-semibold text-slate-700 hover:text-emerald-700 transition cursor-pointer"
-              >
-                <div className="h-8 w-8 rounded-lg bg-emerald-600/10 text-emerald-600 flex items-center justify-center">
-                  <UserPlus size={16} />
-                </div>
-                <span>Add New Employee</span>
-              </Link>
+            <p className="mt-0.5 text-[10px] text-slate-400">Common administrative tasks</p>
+          </div>
 
-              <Link
-                href="/attendance"
-                className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-emerald-50 hover:border-emerald-100 p-3 text-sm font-semibold text-slate-700 hover:text-emerald-700 transition cursor-pointer"
-              >
-                <div className="h-8 w-8 rounded-lg bg-emerald-600/10 text-emerald-600 flex items-center justify-center">
-                  <Calendar size={16} />
-                </div>
-                <span>Record Attendance</span>
-              </Link>
+          <div className="space-y-2">
+            {quickActions.map((action) => {
+              const Icon = action.icon;
 
-              <Link
-                href="/leaves"
-                className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-emerald-50 hover:border-emerald-100 p-3 text-sm font-semibold text-slate-700 hover:text-emerald-700 transition cursor-pointer"
-              >
-                <div className="h-8 w-8 rounded-lg bg-emerald-600/10 text-emerald-600 flex items-center justify-center">
-                  <CalendarClock size={16} />
-                </div>
-                <span>Apply / Approve Leaves</span>
-              </Link>
+              return (
+                <Link
+                  key={action.href}
+                  href={action.href}
+                  className="flex items-center gap-2.5 rounded-lg border border-slate-100 bg-slate-50 px-2.5 py-2 text-xs font-semibold text-slate-700 transition hover:border-emerald-100 hover:bg-emerald-50 hover:text-emerald-700"
+                >
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-emerald-600">
+                    <Icon size={15} />
+                  </div>
 
-              <Link
-                href="/payroll"
-                className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-emerald-50 hover:border-emerald-100 p-3 text-sm font-semibold text-slate-700 hover:text-emerald-700 transition cursor-pointer"
-              >
-                <div className="h-8 w-8 rounded-lg bg-emerald-600/10 text-emerald-600 flex items-center justify-center">
-                  <DollarSign size={16} />
-                </div>
-                <span>Generate Payroll</span>
-              </Link>
-            </div>
+                  <span>{action.label}</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
 
-        <div className="rounded-2xl border border-gray-300 bg-white p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
+        {/* New Joinees */}
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="mb-3 flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-slate-800">New Joinees</h2>
-              <p className="text-xs text-slate-500 mt-1">Recently added employee profiles</p>
+              <h2 className="text-sm font-bold text-slate-800">New Joinees</h2>
+
+              <p className="mt-0.5 text-[10px] text-slate-400">Recently added employee profiles</p>
             </div>
-            <Link href="/employees" className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1">
-              View All <ArrowRight size={14} />
+
+            <Link href="/employees" className="flex items-center gap-0.5 text-[10px] font-semibold text-emerald-600 hover:text-emerald-700">
+              View All
+              <ArrowRight size={12} />
             </Link>
           </div>
 
           <div className="divide-y divide-slate-100">
             {recentEmployees.length === 0 ? (
-              <div className="py-8 text-center text-sm text-slate-400">No employees added yet.</div>
+              <div className="py-6 text-center text-xs text-slate-400">No employees added yet.</div>
             ) : (
               recentEmployees.map((emp) => (
-                <div key={emp._id} className="py-3 flex items-center justify-between first:pt-0 last:pb-0">
-                  <div className="flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 text-sm font-semibold uppercase">{emp.name?.charAt(0)}</div>
-                    <div>
-                      <p className="text-sm font-bold text-slate-800">{emp.name}</p>
-                      <p className="text-xs text-slate-400">{emp.designation}</p>
+                <div key={emp._id} className="flex items-center justify-between py-2.5 first:pt-0 last:pb-0">
+                  <div className="flex min-w-0 items-center gap-2.5">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold uppercase text-slate-600">{emp.name?.charAt(0)}</div>
+
+                    <div className="min-w-0">
+                      <p className="truncate text-xs font-semibold text-slate-800">{emp.name}</p>
+
+                      <p className="truncate text-[10px] text-slate-400">{emp.designation}</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <span className="inline-flex rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">{emp.department}</span>
-                  </div>
+
+                  <span className="ml-2 shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[9px] font-semibold text-slate-600">{emp.department}</span>
                 </div>
               ))
             )}
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
+        {/* Recent Leaves */}
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="mb-3 flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-slate-800">Recent Leaves</h2>
-              <p className="text-xs text-slate-500 mt-1">Recent leave applications</p>
+              <h2 className="text-sm font-bold text-slate-800">Recent Leaves</h2>
+
+              <p className="mt-0.5 text-[10px] text-slate-400">Recent leave applications</p>
             </div>
-            <Link href="/leaves" className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1">
-              View All <ArrowRight size={14} />
+
+            <Link href="/leaves" className="flex items-center gap-0.5 text-[10px] font-semibold text-emerald-600 hover:text-emerald-700">
+              View All
+              <ArrowRight size={12} />
             </Link>
           </div>
 
           <div className="divide-y divide-slate-100">
             {recentLeaves.length === 0 ? (
-              <div className="py-8 text-center text-sm text-slate-400">No leave applications yet.</div>
+              <div className="py-6 text-center text-xs text-slate-400">No leave applications yet.</div>
             ) : (
               recentLeaves.map((leave) => (
-                <div key={leave._id} className="py-3 flex items-center justify-between first:pt-0 last:pb-0">
-                  <div>
-                    <p className="text-sm font-bold text-slate-800">{leave.employee?.name || "Unknown"}</p>
-                    <p className="text-xs text-slate-400 capitalize">{leave.leaveType} leave</p>
+                <div key={leave._id} className="flex items-center justify-between py-2.5 first:pt-0 last:pb-0">
+                  <div className="min-w-0">
+                    <p className="truncate text-xs font-semibold text-slate-800">{leave.employee?.name || "Unknown"}</p>
+
+                    <p className="mt-0.5 text-[10px] capitalize text-slate-400">{leave.leaveType} leave</p>
                   </div>
-                  <div className="text-right">
+
+                  <div className="ml-2 shrink-0 text-right">
                     <span
-                      className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold capitalize ${
+                      className={`inline-flex rounded-full px-2 py-0.5 text-[9px] font-semibold capitalize ${
                         leave.status === "approved" ? "bg-green-100 text-green-700" : leave.status === "pending" ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-700"
                       }`}
                     >
                       {leave.status}
                     </span>
-                    <p className="text-[10px] text-slate-400 mt-1">{new Date(leave.startDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short" })}</p>
+
+                    <p className="mt-0.5 text-[9px] text-slate-400">
+                      {new Date(leave.startDate).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                      })}
+                    </p>
                   </div>
                 </div>
               ))

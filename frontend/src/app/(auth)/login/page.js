@@ -8,20 +8,29 @@ import { BriefcaseBusiness, Loader2 } from "lucide-react";
 
 const LoginPage = () => {
   const router = useRouter();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (token) {
       router.replace("/dashboard");
-    } else {
-      setChecking(false);
+      return;
     }
+
+    // Run asynchronously to avoid setState-in-effect ESLint error
+    const timer = setTimeout(() => {
+      setChecking(false);
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, [router]);
 
   const handleChange = (e) => {
@@ -38,7 +47,6 @@ const LoginPage = () => {
     try {
       const res = await authService.login(form);
 
-      // Save JWT token
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
@@ -60,23 +68,27 @@ const LoginPage = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 p-6">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl border border-slate-100">
-        {/* Header/Logo */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="h-12 w-12 rounded-xl bg-emerald-600 flex items-center justify-center shadow-md mb-3">
+      <div className="w-full max-w-md rounded-2xl border border-slate-100 bg-white p-8 shadow-xl">
+        {/* Header / Logo */}
+        <div className="mb-8 flex flex-col items-center">
+          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 shadow-md">
             <BriefcaseBusiness size={24} className="text-white" />
           </div>
+
           <h1 className="text-2xl font-bold text-slate-800">Welcome Back</h1>
-          <p className="text-sm text-slate-500 mt-1">Sign in to manage your payroll account</p>
+
+          <p className="mt-1 text-sm text-slate-500">Sign in to manage your payroll account</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-5">
           {/* Email */}
           <div>
             <label className="mb-1.5 block text-sm font-medium text-slate-700">Email Address</label>
+
             <input
               type="email"
               name="email"
+              autoComplete="off"
               placeholder="name@company.com"
               value={form.email}
               onChange={handleChange}
@@ -88,9 +100,11 @@ const LoginPage = () => {
           {/* Password */}
           <div>
             <label className="mb-1.5 block text-sm font-medium text-slate-700">Password</label>
+
             <input
               type="password"
               name="password"
+              autoComplete="off"
               placeholder="••••••••"
               value={form.password}
               onChange={handleChange}
@@ -102,15 +116,16 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-emerald-600 py-3 font-semibold text-white transition hover:bg-emerald-700 shadow-md shadow-emerald-600/10 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 font-semibold text-white shadow-md shadow-emerald-600/10 transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading && <Loader2 size={18} className="animate-spin" />}
+
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
         <div className="mt-6 text-center text-sm text-slate-500">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/register" className="font-semibold text-emerald-600 hover:text-emerald-700">
             Create Account
           </Link>

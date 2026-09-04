@@ -14,7 +14,7 @@ const AttendancePage = () => {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
   const [message, setMessage] = useState("");
   const [manualDate, setManualDate] = useState("");
-  const [manualStatus, setManualStatus] = useState("present");
+  const [manualStatus, setManualStatus] = useState("Present");
 
   // Load employees
   useEffect(() => {
@@ -40,15 +40,17 @@ const AttendancePage = () => {
     loadAttendance();
   }, [selectedEmployeeId, fetchAttendance]);
 
-  if (employeesLoading) {
-    return <p className="p-6">Loading employees...</p>;
-  }
-
   const handleCheckIn = async () => {
+    if (!selectedEmployeeId) {
+      setMessage("Please select an employee");
+      return;
+    }
+
     try {
       await attendanceService.checkIn(selectedEmployeeId);
 
       setMessage("Check In Successful");
+
       await fetchAttendance(selectedEmployeeId);
     } catch (error) {
       setMessage(error.response?.data?.message || "Check In Failed");
@@ -56,79 +58,114 @@ const AttendancePage = () => {
   };
 
   const handleCheckOut = async () => {
-    try {
-      const res = await attendanceService.checkOut(selectedEmployeeId);
+    if (!selectedEmployeeId) {
+      setMessage("Please select an employee");
+      return;
+    }
 
-      console.log("Checkout Response:", res);
+    try {
+      await attendanceService.checkOut(selectedEmployeeId);
+
       setMessage("Check Out Successful");
+
       await fetchAttendance(selectedEmployeeId);
     } catch (error) {
       setMessage(error.response?.data?.message || "Check Out Failed");
     }
   };
 
-  const handleManualMark = async () => {
+  const handleManualMark = async (e) => {
+    e.preventDefault();
+
+    if (!selectedEmployeeId) {
+      setMessage("Please select an employee");
+      return;
+    }
+
+    if (!manualDate) {
+      setMessage("Please select a date");
+      return;
+    }
+
     try {
-      const markAttendance = await attendanceService.markAttendance({
+      await attendanceService.markAttendance({
         employeeId: selectedEmployeeId,
         date: manualDate,
         status: manualStatus,
       });
-      console.log(markAttendance);
+
       setMessage("Manual Marking Successful");
-      // Refresh attendance list
+
+      setManualDate("");
+      setManualStatus("Present");
+
       await fetchAttendance(selectedEmployeeId);
     } catch (error) {
       setMessage(error.response?.data?.message || "Manual Marking Failed");
     }
   };
 
+  if (employeesLoading) {
+    return <p className="p-6">Loading employees...</p>;
+  }
+
   return (
     <div className="p-6">
       <PageHeader title="Attendance Records" subtitle="Manage employee attendance records" />
 
-      {/* Employee Select */}
-      <div className="mt-6 flex flex-wrap items-end gap-3 mb-5">
+      {/* Employee Select + Actions */}
+      <div className="mt-6 mb-5 flex flex-wrap items-end gap-3">
         <div>
           <label className="mb-2 block text-sm font-semibold text-slate-700">Select Employee</label>
 
           <select
             value={selectedEmployeeId}
             onChange={(e) => setSelectedEmployeeId(e.target.value)}
-            className="w-72 h-10 rounded border border-gray-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+            className="h-10 w-72 rounded border border-gray-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
           >
-            {employees.map((emp) => (
-              <option key={emp._id} value={emp._id}>
-                {emp.name} ({emp.employeeId})
-              </option>
-            ))}
+            {employees.length === 0 ? (
+              <option value="">No employees found</option>
+            ) : (
+              employees.map((emp) => (
+                <option key={emp._id} value={emp._id}>
+                  {emp.name} ({emp.employeeId})
+                </option>
+              ))
+            )}
           </select>
         </div>
 
         <button
+          type="button"
           onClick={handleCheckIn}
-          className="h-10 text-sm px-5 py-2 rounded bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-sm shadow-emerald-600/10 transition cursor-pointer"
+          disabled={!selectedEmployeeId}
+          className="h-10 cursor-pointer rounded bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-emerald-600/10 transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Check In
         </button>
 
-        <button onClick={handleCheckOut} className="h-10 text-sm px-5 py-2 rounded bg-slate-800 hover:bg-slate-900 text-white font-semibold shadow-sm transition cursor-pointer">
+        <button
+          type="button"
+          onClick={handleCheckOut}
+          disabled={!selectedEmployeeId}
+          className="h-10 cursor-pointer rounded bg-slate-800 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+        >
           Check Out
         </button>
 
-        {message && <p className="ml-2 mb-2 text-sm font-medium text-emerald-600">{message}</p>}
+        {message && <p className="mb-2 ml-2 text-sm font-medium text-emerald-600">{message}</p>}
       </div>
 
-      <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Attendance Table */}
-        <div className="lg:col-span-2 overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm lg:col-span-2">
           <div className="border-b border-slate-200 px-5 py-4">
             <h2 className="text-lg font-semibold text-slate-800">Attendance History</h2>
           </div>
 
           <div className="overflow-x-auto">
             <table className="min-w-full">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              <thead className="border-b border-slate-200 bg-slate-50">
                 <tr>
                   <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">Date</th>
                   <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">Check In</th>
@@ -153,9 +190,11 @@ const AttendancePage = () => {
                   </tr>
                 ) : (
                   attendanceRecords.map((record) => (
-                    <tr key={record._id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-4 py-3 text-sm text-slate-700">{new Date(record.date).toLocaleDateString("en-IN")}</td>
+                    <tr key={record._id} className="transition-colors hover:bg-slate-50">
+                      {/* Date */}
+                      <td className="px-4 py-3 text-sm text-slate-700">{record.date ? new Date(record.date).toLocaleDateString("en-IN") : "—"}</td>
 
+                      {/* Check In */}
                       <td className="px-4 py-3 text-sm text-slate-700">
                         {record.checkIn
                           ? new Date(record.checkIn).toLocaleTimeString("en-IN", {
@@ -165,6 +204,7 @@ const AttendancePage = () => {
                           : "—"}
                       </td>
 
+                      {/* Check Out */}
                       <td className="px-4 py-3 text-sm text-slate-700">
                         {record.checkOut
                           ? new Date(record.checkOut).toLocaleTimeString("en-IN", {
@@ -174,8 +214,10 @@ const AttendancePage = () => {
                           : "—"}
                       </td>
 
-                      <td className="px-4 py-3 text-sm text-slate-700">{record.workHours ?? "-"}</td>
+                      {/* Work Hours */}
+                      <td className="px-4 py-3 text-sm text-slate-700">{record.workHours ?? "—"}</td>
 
+                      {/* Status */}
                       <td className="px-4 py-3">
                         <span
                           className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
@@ -194,26 +236,31 @@ const AttendancePage = () => {
         </div>
 
         {/* Manual Entry */}
-        <div className="rounded-xl border border-gray-300 bg-white shadow-sm h-fit">
+        <div className="h-fit rounded-xl border border-gray-300 bg-white shadow-sm">
           <div className="border-b border-slate-200 px-5 py-4">
             <h2 className="text-lg font-semibold text-slate-800">Manual Entry</h2>
-            <p className="text-sm text-slate-500 mt-1">Record attendance manually.</p>
+
+            <p className="mt-1 text-sm text-slate-500">Record attendance manually.</p>
           </div>
 
-          <form onSubmit={handleManualMark} className="p-5 space-y-5">
+          <form onSubmit={handleManualMark} className="space-y-5 p-5">
+            {/* Date */}
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-700">Date</label>
+
               <input
                 type="date"
-                required
                 value={manualDate}
                 onChange={(e) => setManualDate(e.target.value)}
+                required
                 className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
               />
             </div>
 
+            {/* Status */}
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-700">Status</label>
+
               <select
                 value={manualStatus}
                 onChange={(e) => setManualStatus(e.target.value)}
@@ -227,7 +274,12 @@ const AttendancePage = () => {
               </select>
             </div>
 
-            <button type="submit" className="w-full rounded bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 shadow-sm cursor-pointer">
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={!selectedEmployeeId}
+              className="w-full cursor-pointer rounded bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
               Record Attendance
             </button>
           </form>

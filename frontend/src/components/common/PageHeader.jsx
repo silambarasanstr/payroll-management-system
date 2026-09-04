@@ -2,14 +2,16 @@ import React from "react";
 
 export default function PageHeader({ title, subtitle, children }) {
   return (
-    <div className="flex items-center justify-between mb-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-800">{title}</h1>
+    <div className="mb-3 flex min-h-9 items-center justify-between gap-3">
+      {/* Title */}
+      <div className="min-w-0">
+        <h1 className="truncate text-lg font-bold leading-tight text-slate-800">{title}</h1>
 
-        {subtitle && <p className="text-sm text-slate-500">{subtitle}</p>}
+        {subtitle && <p className="mt-0.5 truncate text-[11px] leading-tight text-slate-400">{subtitle}</p>}
       </div>
 
-      {children && <div>{children}</div>}
+      {/* Actions */}
+      {children && <div className="flex shrink-0 items-center gap-2">{children}</div>}
     </div>
   );
 }

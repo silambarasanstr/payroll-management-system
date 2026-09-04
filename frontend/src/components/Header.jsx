@@ -29,33 +29,40 @@ export default function Header() {
   };
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6 shadow-sm">
-      {/* Left */}
-      <div>
-        <h1 className="text-xl font-bold text-slate-800">Payroll Management System</h1>
-        <p className="text-sm text-slate-500">Welcome back, {user?.name || "Admin"}</p>
+    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-4 sm:px-6">
+      {/* Left - Brand */}
+      <div className="min-w-0">
+        <h2 className="truncate text-sm font-semibold text-gray-900">Payroll Management System</h2>
+
+        <p className="mt-0.5 text-[11px] text-gray-400">Admin Dashboard</p>
       </div>
 
-      {/* Right */}
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-3">
-          <div className="text-right">
-            <p className="text-sm font-semibold text-slate-800">{user?.name || "Admin"}</p>
+      {/* Right - User */}
+      <div className="flex items-center gap-3">
+        {/* User Info */}
+        <div className="hidden text-right sm:block">
+          <p className="text-xs font-semibold text-gray-800">{user?.name || "Admin"}</p>
 
-            <p className="text-xs capitalize text-slate-500">{user?.role || "Administrator"}</p>
-          </div>
-
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
-            <UserCircle2 size={24} className="text-emerald-600" />
-          </div>
+          <p className="mt-0.5 text-[10px] capitalize text-gray-400">{user?.role || "Administrator"}</p>
         </div>
 
+        {/* Avatar */}
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 ring-1 ring-emerald-100">
+          <UserCircle2 size={21} strokeWidth={1.8} className="text-emerald-600" />
+        </div>
+
+        {/* Divider */}
+        <div className="hidden h-7 w-px bg-gray-200 sm:block" />
+
+        {/* Logout */}
         <button
+          type="button"
           onClick={handleLogout}
           title="Logout"
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:text-red-600 hover:bg-red-50 hover:border-red-100 transition-all cursor-pointer"
+          aria-label="Logout"
+          className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg text-gray-500 transition hover:bg-red-50 hover:text-red-600"
         >
-          <LogOut size={18} />
+          <LogOut size={18} strokeWidth={1.8} />
         </button>
       </div>
     </header>
