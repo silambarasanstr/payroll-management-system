@@ -45,7 +45,7 @@ app.get("/api", (req, res) => {
   res.status(200).json({
     success: true,
     data: [],
-    message: "Welcome to the Payroll Management System",
+    message: "Welcome to the Payroll Management System --- Production",
   });
 });
 
