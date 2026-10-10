@@ -13,10 +13,10 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Middleware
-const allowedOrigins = ["http://localhost:7001", process.env.CLIENT_URL].filter(
-  Boolean,
-);
+const allowedOrigins = [
+  "http://localhost:7001",
+  "https://payroll-management-system-jet.vercel.app",
+];
 
 app.use(
   cors({
