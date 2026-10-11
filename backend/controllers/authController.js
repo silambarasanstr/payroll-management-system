@@ -35,41 +35,92 @@ export const register = async (req, res) => {
   }
 };
 
+// export const login = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Invalid email or password",
+//       });
+//     }
+
+//     const isMatch = await bcrypt.compare(password, user.password);
+//     if (!isMatch) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Invalid email or password",
+//       });
+//     }
+
+//     const token = generateToken(user._id);
+
+//     res.status(200).json({
+//       success: true,
+//       data: { user, token },
+//       message: "Login successful",
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Error logging in",
+//       error,
+//     });
+//   }
+// };
+
+
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
+
     if (!user) {
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
         message: "Invalid email or password",
       });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
+
     if (!isMatch) {
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
         message: "Invalid email or password",
       });
     }
 
+    if (!process.env.JWT_SECRET) {
+      throw new Error("JWT_SECRET is missing in environment variables");
+    }
+
     const token = generateToken(user._id);
 
-    res.status(200).json({
+    const safeUser = user.toObject();
+    delete safeUser.password;
+
+    return res.status(200).json({
       success: true,
-      data: { user, token },
+      data: {
+        user: safeUser,
+        token,
+      },
       message: "Login successful",
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("LOGIN ERROR:", error.stack || error);
+
+    return res.status(500).json({
       success: false,
       message: "Error logging in",
-      error,
     });
   }
 };
+
 
 export const getProfile = async (req, res) => {
   try {
