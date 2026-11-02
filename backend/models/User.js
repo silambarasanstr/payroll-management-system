@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
 
     role: {
@@ -23,8 +24,16 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "hr", "employee"],
       default: "employee",
     },
-    employee: { type: mongoose.Schema.Types.ObjectId, ref: "Employee" },
+    employee: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employee",
+      default: null,
+    },
     isActive: { type: Boolean, default: true },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

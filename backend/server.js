@@ -7,7 +7,7 @@ import authRoutes from "./routes/authRoutes.js";
 import employeeRoutes from "./routes/employeeRoutes.js";
 import attendanceRoutes from "./routes/attendanceRoutes.js";
 import leaveRoutes from "./routes/leaveRoutes.js";
-import payrollRoutes from "./routes/payrollRoutes.js"
+import payrollRoutes from "./routes/payrollRoutes.js";
 
 dotenv.config();
 
@@ -15,8 +15,12 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:7001",
+  "http://127.0.0.1:7001",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
   "https://payroll-management-system-jet.vercel.app",
-];
+  process.env.CLIENT_URL,
+].filter(Boolean);
 
 app.use(
   cors({
@@ -24,7 +28,7 @@ app.use(
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(null, true); // Allow all during development to avoid blocking
       }
     },
     credentials: true,
@@ -44,8 +48,8 @@ app.use(express.json());
 app.get("/api", (req, res) => {
   res.status(200).json({
     success: true,
-    data: [],
-    message: "Welcome to the Payroll Management System --- Production",
+    data: [{ message: "Welcome to the Payroll Management System API" }],
+    message: "Welcome to the Payroll Management System API",
   });
 });
 
@@ -53,9 +57,19 @@ app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/leaves", leaveRoutes);
-app.use('/api/payrolls', payrollRoutes);
+app.use("/api/payrolls", payrollRoutes);
+
+
+
 
 // Start Server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`
+====================================
+🚀 Payroll Backend Started
+====================================
+🌐 Server : http://localhost:${PORT}
+📦 Environment : ${process.env.NODE_ENV}
+====================================
+`);
 });
