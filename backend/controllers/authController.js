@@ -55,11 +55,21 @@ export const register = async (req, res) => {
   }
 };
 
+
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    // Validate request body
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required",
+      });
+    }
+
+    // Find user and include password
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
       return res.status(401).json({
@@ -68,6 +78,7 @@ export const login = async (req, res) => {
       });
     }
 
+    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
@@ -77,12 +88,15 @@ export const login = async (req, res) => {
       });
     }
 
+    // Check JWT secret
     if (!process.env.JWT_SECRET) {
       throw new Error("JWT_SECRET is missing in environment variables");
     }
 
+    // Generate JWT token
     const token = generateToken(user._id);
 
+    // Remove password from response
     const safeUser = user.toObject();
     delete safeUser.password;
 
@@ -94,6 +108,7 @@ export const login = async (req, res) => {
       },
       message: "Login successful",
     });
+
   } catch (error) {
     console.error("LOGIN ERROR:", error.stack || error);
 
@@ -103,6 +118,7 @@ export const login = async (req, res) => {
     });
   }
 };
+
 
 export const getProfile = async (req, res) => {
   try {
