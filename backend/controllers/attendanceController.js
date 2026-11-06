@@ -127,15 +127,17 @@ export const markAttendance = async (req, res) => {
   try {
     const { employeeId, date, status, remarks } = req.body;
 
-
     // Today's date or custom date
     const attendanceDate = date ? new Date(date) : new Date();
     attendanceDate.setHours(0, 0, 0, 0);
 
-
     const attendance = await Attendance.findOneAndUpdate(
       { employee: employeeId, date: attendanceDate },
-      { status, remarks },
+      {
+        status,
+        checkIn: status === "absent" || status === "leave" ? null : new Date(),
+        remarks,
+      },
       { new: true, upsert: true, runValidators: true },
     );
 
@@ -185,9 +187,9 @@ export const getAttendance = async (req, res) => {
 
 export const getMonthlySummary = async (req, res) => {
   try {
-      const { employeeId } = req.params;
+    const { employeeId } = req.params;
     const { month, year } = req.query;
-    
+
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0);
 
