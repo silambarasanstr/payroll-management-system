@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 7001",
-    "build": "next build",
-    "start": "next start -p 7001",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+     "dev": "node --env-file=.env.development -e \"console.log('Environment: development'); console.log('API URL:', process.env.NEXT_PUBLIC_API_URL)\" && next dev -p 7001",
+
+  "build": "node --env-file=.env.production -e \"console.log('Environment: production'); console.log('API URL:', process.env.NEXT_PUBLIC_API_URL)\" && next build",
+
+  "start": "node --env-file=.env.production -e \"console.log('Environment: production'); console.log('API URL:', process.env.NEXT_PUBLIC_API_URL)\" && next start -p 7001",
+
+  "lint": "eslint .",
+  "lint:fix": "eslint . --fix",
+  "format": "prettier --write .",
+  "format:check": "prettier --check ."
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

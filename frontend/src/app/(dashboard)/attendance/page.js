@@ -221,7 +221,7 @@ const AttendancePage = () => {
                       <td className="px-4 py-3">
                         <span
                           className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
-                            record.status === "Present" ? "bg-green-100 text-green-700" : record.status === "Absent" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700"
+                            record.status === "present" ? "bg-green-100 text-green-700" : record.status === "absent" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700"
                           }`}
                         >
                           {record.status}
@@ -266,11 +266,10 @@ const AttendancePage = () => {
                 onChange={(e) => setManualStatus(e.target.value)}
                 className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
               >
-                <option value="Present">Present</option>
-                <option value="Absent">Absent</option>
-                <option value="Half Day">Half Day</option>
-                <option value="On Leave">On Leave</option>
-                <option value="Holiday">Holiday</option>
+                <option value="present">Present</option>
+                <option value="absent">Absent</option>
+                <option value="leave">Leave</option> 
+                
               </select>
             </div>
 

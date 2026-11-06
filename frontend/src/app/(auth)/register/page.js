@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -26,11 +27,7 @@ const RegisterPage = () => {
       return;
     }
 
-    const timer = setTimeout(() => {
-      setChecking(false);
-    }, 0);
-
-    return () => clearTimeout(timer);
+    setChecking(false);
   }, [router]);
 
   const handleChange = (e) => {
@@ -61,29 +58,38 @@ const RegisterPage = () => {
   if (checking) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+        <Loader2 className="h-5 w-5 animate-spin text-emerald-600" />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-6">
-      <div className="w-full max-w-md rounded-2xl border border-slate-100 bg-white p-8 shadow-xl">
-        {/* Header / Logo */}
-        <div className="mb-6 flex flex-col items-center">
-          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 shadow-md">
-            <BriefcaseBusiness size={24} className="text-white" />
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-3">
+      <div className="w-full max-w-sm rounded-xl border border-slate-100 bg-white p-5 shadow-lg">
+
+        {/* Header */}
+        <div className="mb-5 flex flex-col items-center">
+          <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600">
+            <BriefcaseBusiness size={19} className="text-white" />
           </div>
 
-          <h1 className="text-2xl font-bold text-slate-800">Create Account</h1>
+          <h1 className="text-xl font-bold text-slate-800">
+            Create Account
+          </h1>
 
-          <p className="mt-1 text-sm text-slate-500">Register a new user account</p>
+          <p className="mt-0.5 text-xs text-slate-500">
+            Register a new user account
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Register Form */}
+        <form onSubmit={handleSubmit} className="space-y-3">
+
           {/* Name */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Name</label>
+            <label className="mb-1 block text-xs font-medium text-slate-700">
+              Name
+            </label>
 
             <input
               type="text"
@@ -93,13 +99,15 @@ const RegisterPage = () => {
               autoComplete="off"
               required
               placeholder="Enter name"
-              className="w-full rounded-xl border border-slate-200 px-4 py-2 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
             />
           </div>
 
           {/* Email */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Email</label>
+            <label className="mb-1 block text-xs font-medium text-slate-700">
+              Email
+            </label>
 
             <input
               type="email"
@@ -109,13 +117,15 @@ const RegisterPage = () => {
               autoComplete="off"
               required
               placeholder="Enter email"
-              className="w-full rounded-xl border border-slate-200 px-4 py-2 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
             />
           </div>
 
           {/* Password */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Password</label>
+            <label className="mb-1 block text-xs font-medium text-slate-700">
+              Password
+            </label>
 
             <input
               type="password"
@@ -125,7 +135,7 @@ const RegisterPage = () => {
               autoComplete="off"
               required
               placeholder="Enter password"
-              className="w-full rounded-xl border border-slate-200 px-4 py-2 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-xs outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
             />
           </div>
 
@@ -133,20 +143,27 @@ const RegisterPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 font-semibold text-white shadow-md shadow-emerald-600/10 transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-emerald-600 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading && <Loader2 size={18} className="animate-spin" />}
+            {loading && (
+              <Loader2 size={14} className="animate-spin" />
+            )}
 
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-slate-500">
+        {/* Login Link */}
+        <div className="mt-4 border-t border-slate-100 pt-3 text-center text-xs text-slate-500">
           Already have an account?{" "}
-          <Link href="/login" className="font-semibold text-emerald-600 hover:text-emerald-700">
+          <Link
+            href="/login"
+            className="font-semibold text-emerald-600 hover:text-emerald-700"
+          >
             Sign In
           </Link>
         </div>
+
       </div>
     </div>
   );
