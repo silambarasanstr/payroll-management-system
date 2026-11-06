@@ -13,8 +13,6 @@ const RegisterPage = () => {
     name: "",
     email: "",
     password: "",
-    role: "employee",
-    employee: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -127,39 +125,6 @@ const RegisterPage = () => {
               autoComplete="off"
               required
               placeholder="Enter password"
-              className="w-full rounded-xl border border-slate-200 px-4 py-2 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-            />
-          </div>
-
-          {/* Role */}
-          <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Role</label>
-
-            <select
-              name="role"
-              value={form.role}
-              onChange={handleChange}
-              autoComplete="off"
-              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-            >
-              <option value="admin">Admin</option>
-              <option value="hr">HR Manager</option>
-              <option value="employee">Employee</option>
-            </select>
-          </div>
-
-          {/* Employee ID */}
-          <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Employee ID</label>
-
-            <input
-              type="text"
-              name="employee"
-              value={form.employee}
-              onChange={handleChange}
-              autoComplete="off"
-              required
-              placeholder="Enter Employee MongoDB ID"
               className="w-full rounded-xl border border-slate-200 px-4 py-2 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
             />
           </div>

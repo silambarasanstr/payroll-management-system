@@ -66,6 +66,15 @@ const LoginPage = () => {
     );
   }
 
+    const fillCredentials = (email, password) => {
+    setForm({
+      email,
+      password,
+    });
+
+    
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 p-6">
       <div className="w-full max-w-md rounded-2xl border border-slate-100 bg-white p-8 shadow-xl">
@@ -129,6 +138,51 @@ const LoginPage = () => {
           <Link href="/register" className="font-semibold text-emerald-600 hover:text-emerald-700">
             Create Account
           </Link>
+        </div>
+
+         {/* Quick Credentials */}
+        <div className="pt-4 mt-5">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-xs font-semibold tracking-wide text-gray-500 uppercase">
+              Quick Login
+            </p>
+
+            <span className="text-[11px] text-gray-400">Click to autofill</span>
+          </div>
+
+          <div className="space-y-2">
+            {/* Admin */}
+            <button
+              type="button"
+              onClick={() => fillCredentials("admin@example.com", "123456")}
+              className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-2.5 transition hover:border-blue-500 hover:bg-blue-50"
+            >
+              <div className="text-left">
+                <p className="text-sm font-semibold text-gray-800">👨‍💼 Admin</p>
+                <p className="text-[11px] text-gray-500">admin@example.com</p>
+              </div>
+
+              <span className="rounded bg-blue-100 px-2 py-1 text-[10px] font-semibold text-blue-700">
+                USE
+              </span>
+            </button>
+
+            {/* Member */}
+            <button
+              type="button"
+              onClick={() => fillCredentials("member@example.com", "123456")}
+              className="flex w-full items-center justify-between rounded-lg border border-gray-200 p-2.5 transition hover:border-green-500 hover:bg-green-50"
+            >
+              <div className="text-left">
+                <p className="text-sm font-semibold text-gray-800">👤 Member</p>
+                <p className="text-[11px] text-gray-500">member@example.com</p>
+              </div>
+
+              <span className="rounded bg-green-100 px-2 py-1 text-[10px] font-semibold text-green-700">
+                USE
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
